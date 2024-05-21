@@ -1,0 +1,5 @@
+package bakery.Token;
+
+public interface TokenRepository {
+
+}

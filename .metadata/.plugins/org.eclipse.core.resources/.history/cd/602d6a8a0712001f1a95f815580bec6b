@@ -1,0 +1,5 @@
+package bakery.service;
+
+public class OrderArrivalDetailsService {
+
+}

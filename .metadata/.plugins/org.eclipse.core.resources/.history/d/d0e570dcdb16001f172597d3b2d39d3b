@@ -1,0 +1,45 @@
+package bakery.auth;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import bakery.model.TblUser;
+import bakery.repository.UserRepository;
+import bakery.role.RoleRepository;
+import lombok.RequiredArgsConstructor;
+
+
+
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserRepository userRepo;
+
+	public void register(RegistrationRequest request) {
+		var userRole = roleRepository.findByRoleName("USER")
+				.orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
+		var user = TblUser.builder()
+				.firstname(request.getFirstname())
+				.lastname(request.getLastname())
+				.userEmail(request.getUserEmail())
+				.password(passwordEncoder.encode(request.getPassword()))
+				.locked(false)
+				.enabled(false)
+				.roles(List.of(userRole))
+				.build();
+		userRepo.save(user);
+	}
+
+}

@@ -1,0 +1,5 @@
+package bakery.model;
+
+public enum Role {
+
+}

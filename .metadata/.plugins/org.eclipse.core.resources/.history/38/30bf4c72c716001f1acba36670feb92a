@@ -1,0 +1,12 @@
+spring.application.name=backend
+server.port = 8080
+spring.jpa.database = POSTGRESQL
+spring.sql.init.platform = postgres
+spring.jpa.show-sql = true
+spring.datasource.driver-class-name = org.postgresql.Driver
+
+spring.datasource.url = jdbc:postgresql://localhost:5432/bakery
+spring.datasource.username = postgres
+spring.datasource.password = postgres
+
+spring.jpa.hibernate.ddl-auto = update

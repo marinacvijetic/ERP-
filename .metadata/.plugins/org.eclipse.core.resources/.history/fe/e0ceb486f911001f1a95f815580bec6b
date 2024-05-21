@@ -1,0 +1,16 @@
+package bakery.repository;
+
+import java.util.Collection;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import bakery.model.TblUser;
+
+@Repository
+public interface UserRepository extends JpaRepository<TblUser, Long>{
+
+	Collection<TblUser> findUserByUserEmail(String UserEmail);
+	
+	TblUser findUserById(Long Id);
+}
