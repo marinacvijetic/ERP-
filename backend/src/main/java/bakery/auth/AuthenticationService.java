@@ -5,14 +5,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import bakery.Token.Token;
 import bakery.Token.TokenRepository;
+import bakery.email.EmailService;
+import bakery.email.EmailTemplateName;
 import bakery.model.TblUser;
 import bakery.repository.UserRepository;
 import bakery.role.RoleRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -33,8 +37,14 @@ public class AuthenticationService {
 	
 	@Autowired
 	private TokenRepository tokenRepo;
+	
+	@Autowired
+	private EmailService emailService;
 
-	public void register(RegistrationRequest request) {
+	@Value("${application.mailing.frontend.activation-url}")
+	private String activationUrl;
+
+	public void register(RegistrationRequest request) throws MessagingException {
 		var userRole = roleRepository.findByRoleName("USER")
 				.orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 		var user = TblUser.builder()
@@ -50,8 +60,16 @@ public class AuthenticationService {
 		sendValidationEmail(user);
 	}
 
-	private void sendValidationEmail(TblUser user) {
+	private void sendValidationEmail(TblUser user) throws MessagingException {
 		var newToken = generateAndSaveActivationToken(user);
+		
+		emailService.sendEmail(
+				user.getUserEmail(), 
+				user.getFullName(), 
+				EmailTemplateName.ACTIVATE_ACCOUNT, 
+				activationUrl, 
+				newToken, 
+				"Account activation");
 	}
 
 	private String generateAndSaveActivationToken(TblUser user) {

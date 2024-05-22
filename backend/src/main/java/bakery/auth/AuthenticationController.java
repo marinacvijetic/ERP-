@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +27,7 @@ public class AuthenticationController {
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public ResponseEntity<?> register(
 			@RequestBody @Valid RegistrationRequest request
-			){
+			) throws MessagingException{
 		authService.register(request);
 		
 		return ResponseEntity.accepted().build();

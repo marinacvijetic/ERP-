@@ -6,9 +6,11 @@ import bakery.model.TblUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -22,8 +24,10 @@ import lombok.NoArgsConstructor;
 public class Token {
 	
     @Id
-    @GeneratedValue
-    private Integer id;
+	@SequenceGenerator(name="TOKEN_TOKENID_GENERATOR", sequenceName="Token_seq", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOKEN_TOKENID_GENERATOR")
+    @Column(name="token_id")
+    private Integer tokenId;
 
     @Column(unique = true)
     private String token;
@@ -36,11 +40,11 @@ public class Token {
     private TblUser user;
 
 	public Integer getId() {
-		return id;
+		return tokenId;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.tokenId = id;
 	}
 
 	public String getToken() {
