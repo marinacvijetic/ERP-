@@ -45,7 +45,6 @@ public class OrderService {
 		}
 		
 		oldOrder.setOrderDate(order.getOrderDate());
-		oldOrder.setPaymentMethod(order.getPaymentMethod());
 		oldOrder.setShippingMethod(order.getShippingMethod());
 		oldOrder.setuser(order.getuser());
 		oldOrder.setArrivalDetails(order.getArrivalDetails());

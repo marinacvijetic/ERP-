@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -39,12 +40,12 @@ public class TblOrder {
     private BigDecimal total;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method")
-    private PaymentMethod paymentMethod;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "shipping_method")
     private ShippingMethod shippingMethod;
+    
+	@OneToOne(mappedBy = "order", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private TblPayment payment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -65,20 +66,6 @@ public class TblOrder {
     public TblOrder() {
     	
     }
-    
-	public TblOrder(Long orderId, Date orderDate, BigDecimal total, PaymentMethod paymentMethod,
-			ShippingMethod shippingMethod, TblUser user, TblOrderArrivalDetails arrivalDetails, TblOrderStatus status,
-			List<TblOrderItem> orderItems) {
-		this.orderId = orderId;
-		this.orderDate = orderDate;
-		this.total = total;
-		this.paymentMethod = paymentMethod;
-		this.shippingMethod = shippingMethod;
-		this.user = user;
-		this.arrivalDetails = arrivalDetails;
-		this.status = status;
-		this.orderItems = orderItems;
-	}
 
 	public Long getOrderId() {
 		return orderId;
@@ -104,16 +91,24 @@ public class TblOrder {
 		this.total = total;
 	}
 
-	public PaymentMethod getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(PaymentMethod paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-
 	public ShippingMethod getShippingMethod() {
 		return shippingMethod;
+	}
+	
+	public TblPayment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(TblPayment payment) {
+		this.payment = payment;
+	}
+
+	public TblUser getUser() {
+		return user;
+	}
+
+	public void setUser(TblUser user) {
+		this.user = user;
 	}
 
 	public void setShippingMethod(ShippingMethod shippingMethod) {
