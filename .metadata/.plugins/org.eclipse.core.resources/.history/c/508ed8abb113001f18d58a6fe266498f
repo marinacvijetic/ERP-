@@ -1,9 +1,0 @@
-package bakery.request;
-
-import java.sql.Date;
-import java.time.Instant;
-
-public class OrderCreateRequest {
-
-	private Date orderDate = Date.from(Instant.now());
-}

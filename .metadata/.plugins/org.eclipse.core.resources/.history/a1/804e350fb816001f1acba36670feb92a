@@ -1,5 +1,0 @@
-package bakery.security;
-
-public class JwtService {
-
-}

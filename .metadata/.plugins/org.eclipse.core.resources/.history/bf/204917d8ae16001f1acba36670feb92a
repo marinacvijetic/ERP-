@@ -1,5 +1,0 @@
-package bakery.role;
-
-public interface RoleRepository {
-
-}

@@ -1,5 +1,0 @@
-package bakery.auth;
-
-public class AuthenticationController {
-
-}

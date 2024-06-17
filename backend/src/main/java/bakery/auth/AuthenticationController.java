@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication")
 public class AuthenticationController {
@@ -35,10 +35,13 @@ public class AuthenticationController {
 		return ResponseEntity.accepted().build();
 	}
 	
-	@PostMapping("/authenticate")
-	public ResponseEntity<AuthenticationResponse> authenticatEntity (@RequestBody @Valid AuthenticationRequest request){
+	@PostMapping("/login")
+	public ResponseEntity<AuthenticationResponse> authenticatEntity (@RequestParam("userEmail") String userEmail, 
+	        @RequestParam("password") String password){
 		
-		return ResponseEntity.ok(authService.authenticate(request));
+		AuthenticationRequest request = new AuthenticationRequest(userEmail, password);
+		
+		return new ResponseEntity<>(authService.authenticate(request), HttpStatus.OK);
 		
 	}
 	

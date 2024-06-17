@@ -5,4 +5,6 @@
 	<item key="org.eclipse.jdt.debug.ui.jre_preference_page_context.columnWidth2" value="118"/>
 	<item key="org.eclipse.jdt.debug.ui.jre_preference_page_context.sortColumn" value="1"/>
 	<item key="LAST_PATH_SETTING" value="C:\Program Files\Java\jdk-17\lib"/>
+	<section name="expressionHistory">
+	</section>
 </section>

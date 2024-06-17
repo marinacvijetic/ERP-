@@ -1,5 +1,0 @@
-package bakery.request;
-
-public class OrderResponse {
-
-}
