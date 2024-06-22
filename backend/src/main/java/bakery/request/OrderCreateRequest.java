@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+import bakery.model.ShippingMethod;
+import bakery.model.TblOrderArrivalDetails;
 import bakery.model.TblOrderItem;
 import bakery.model.TblOrderStatus;
 import bakery.model.TblUser;
@@ -17,6 +19,8 @@ public class OrderCreateRequest {
 	private BigDecimal total;
 	private List<TblOrderItem> orderItems;
 	private TblUser user;
+	private TblOrderArrivalDetails orderArrivalDetails;
+	private ShippingMethod shippingMethod;
 	public Date getOrderDate() {
 		return orderDate;
 	}
@@ -47,6 +51,18 @@ public class OrderCreateRequest {
 	}
 	public void setUser(TblUser user) {
 		this.user = user;
+	}
+	public TblOrderArrivalDetails getOrderArrivalDetails() {
+		return orderArrivalDetails;
+	}
+	public void setOrderArrivalDetails(TblOrderArrivalDetails orderArrivalDetails) {
+		this.orderArrivalDetails = orderArrivalDetails;
+	}
+	public ShippingMethod getShippingMethod() {
+		return shippingMethod;
+	}
+	public void setShippingMethod(ShippingMethod shippingMethod) {
+		this.shippingMethod = shippingMethod;
 	}
 	
 	

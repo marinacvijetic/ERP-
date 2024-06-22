@@ -15,8 +15,15 @@ class AuthService {
     formData.append('password', data.password);
     formData.append('firstname', data.firstname);
     formData.append('lastname', data.lastname);
+    formData.append('phoneNumber', data.phoneNumber);
 
     return http.post("/auth/register", formData);
+  }
+
+  activateAccount(token) {
+    return http.get(`/auth/activate-account`, {
+      params: { token: token }
+    });
   }
 }
 

@@ -57,10 +57,11 @@ public class AuthenticationService {
 	private String activationUrl;
 
 	public void register(RegistrationRequest request) throws MessagingException {
-		var userRole = roleRepository.findByRoleName("ADMIN")
+		var userRole = roleRepository.findByRoleName("USER")
 				.orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
 		var user = TblUser.builder()
 				.firstname(request.getFirstname())
+				.phoneNumber(request.getPhoneNumber())
 				.lastname(request.getLastname())
 				.userEmail(request.getUserEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
@@ -120,6 +121,7 @@ public class AuthenticationService {
 		var user = ((TblUser)auth.getPrincipal());
 		claims.put("fullName", user.getFullName());
 		claims.put("userId", user.getUserId());
+		claims.put("role", user.getRoles());
 		var jwtToken = jwtService.generateToken(claims, user);
 		
 		return AuthenticationResponse.builder().token(jwtToken).build();

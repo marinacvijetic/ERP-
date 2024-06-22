@@ -2,6 +2,8 @@ import { useState } from 'react';
 import authService from '../../services/auth.service';
 import { login } from '../../state/logged-user.state';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 
 
 function Login(props){
@@ -27,9 +29,21 @@ function Login(props){
         .then((response) => {
             if(response.status === 200){
                 console.log("Full response:", response.data);
-                localStorage.setItem('token', response.data.token);
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                
+                const decodedToken = jwtDecode(token);
+                const role = decodedToken.role;
+                const roleName = role.length > 0 ? role[0].roleName : '';
+                const userId = decodedToken.userId;
+
+                localStorage.setItem('role', JSON.stringify(roleName));
+                localStorage.setItem('userId', userId);
+                console.log(roleName);
                 login({
-                    token: response.data.token
+                    token: token,
+                    role: roleName,
+                    userId: userId
                 });
                 navigate('/');
             }

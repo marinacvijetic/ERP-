@@ -68,6 +68,8 @@ public class OrderController {
 		order.setOrderDate(request.getOrderDate());
 		order.setOrderItems(request.getOrderItems());
 		order.setuser(request.getUser());
+		order.setArrivalDetails(request.getOrderArrivalDetails());
+		order.setShippingMethod(request.getShippingMethod());
 		TblOrder newOrder = orderService.addOrder(order);
 		
 		return new ResponseEntity<>(newOrder.getOrderId(), HttpStatus.CREATED);

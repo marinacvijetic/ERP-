@@ -36,6 +36,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(req -> 
 							req.requestMatchers(
 									"/auth/**",
+									"/webhook/**",
+									"/activate-account",
 									"/v2/api-docs",
                                     "/v3/api-docs",
                                     "/v3/api-docs/**",
@@ -57,6 +59,8 @@ public class SecurityConfig {
 							.requestMatchers(HttpMethod.DELETE, "/orderArrivalDetails/**").hasRole("ADMIN")
 							.requestMatchers(HttpMethod.GET, "/order/**").hasRole("ADMIN")
 							.requestMatchers(HttpMethod.POST, "/order/**").authenticated()
+							.requestMatchers(HttpMethod.GET, "/payments/**").authenticated()
+							.requestMatchers(HttpMethod.GET, "/client-secret/**").authenticated()
 							.requestMatchers(HttpMethod.PUT, "/order/**").hasRole("ADMIN")
 							.requestMatchers(HttpMethod.DELETE, "/order/**").hasRole("ADMIN")
 							.requestMatchers(HttpMethod.GET, "/orderItem/**").hasRole("ADMIN")

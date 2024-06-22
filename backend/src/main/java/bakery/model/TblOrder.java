@@ -140,11 +140,28 @@ public class TblOrder {
 	}
 
 	public List<TblOrderItem> getOrderItems() {
-		return orderItems;
+		return this.orderItems;
 	}
 
 	public void setOrderItems(List<TblOrderItem> orderItems) {
 		this.orderItems = orderItems;
+		for(TblOrderItem item : orderItems) {
+			item.setOrder(this);
+		}
+	}
+	
+	public TblOrderItem addOrderItem(TblOrderItem orderItem) {
+		getOrderItems().add(orderItem);
+		orderItem.setOrder(this);
+		
+		return orderItem;
+	}
+	
+	public TblOrderItem removeOrderItem(TblOrderItem orderItem) {
+		getOrderItems().remove(orderItem);
+		orderItem.setOrder(null);
+		
+		return orderItem;
 	}
 
 
