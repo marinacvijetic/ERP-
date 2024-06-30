@@ -49,7 +49,7 @@ public class ProductController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<TblProduct> updateProduct(@PathVariable Long id, @RequestBody TblProduct product){
-		TblProduct updatedProduct = productService.updaProduct(id, product);
+		TblProduct updatedProduct = productService.updateProduct(id, product);
 		if(updatedProduct == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {

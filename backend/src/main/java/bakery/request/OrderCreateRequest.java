@@ -9,13 +9,11 @@ import java.util.List;
 import bakery.model.ShippingMethod;
 import bakery.model.TblOrderArrivalDetails;
 import bakery.model.TblOrderItem;
-import bakery.model.TblOrderStatus;
 import bakery.model.TblUser;
 
 public class OrderCreateRequest {
 
 	private Date orderDate = Date.from(Instant.now());
-	private TblOrderStatus status;
 	private BigDecimal total;
 	private List<TblOrderItem> orderItems;
 	private TblUser user;
@@ -28,12 +26,6 @@ public class OrderCreateRequest {
 		this.orderDate = orderDate;
 	}
 	
-	public TblOrderStatus getStatus() {
-		return status;
-	}
-	public void setStatus(TblOrderStatus status) {
-		this.status = status;
-	}
 	public BigDecimal getTotal() {
 		return total;
 	}
@@ -47,7 +39,7 @@ public class OrderCreateRequest {
 		this.orderItems = orderItems;
 	}
 	public TblUser getUser() {
-		return user;
+		return this.user;
 	}
 	public void setUser(TblUser user) {
 		this.user = user;

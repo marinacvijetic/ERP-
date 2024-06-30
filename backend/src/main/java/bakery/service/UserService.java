@@ -3,11 +3,14 @@ package bakery.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import bakery.model.TblUser;
 import bakery.repository.UserRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -17,6 +20,9 @@ public class UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	UserDetailsService userDetailsService;
 	
 	public List<TblUser> getAllUser(){
 		return userRepo.findAll();
@@ -30,9 +36,15 @@ public class UserService {
 		return userRepo.findUserByUserEmail(userEmail).orElse(null);
 	}
 	
-	public void deleteUserById(Long userId) {
-		userRepo.deleteById(userId);
-	}
+	@Transactional
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id);
+    }
+
+    public boolean isAdmin(UserDetails userDetails) {
+        TblUser user = (TblUser) userDetailsService.loadUserByUsername(userDetails.getUsername());
+        return user.getRoles().stream().anyMatch(role -> role.getRoleName().equals("ADMIN"));
+    }
 	
 	public TblUser addUser(TblUser user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));

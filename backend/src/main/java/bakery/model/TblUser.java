@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import bakery.role.Role;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -69,7 +70,8 @@ public class TblUser implements UserDetails, Principal{
 	@OneToMany(mappedBy="user")
 	private List<TblOrder> orders;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+	
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Role> roles;
 
 	public Long getUserId() {

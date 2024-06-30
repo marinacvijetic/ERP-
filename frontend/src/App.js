@@ -58,7 +58,7 @@ const  App = () => {
       </li>
 
 
-      {user && user.userId && 
+      {user && user.role === 'ADMIN' && 
       <li className="nav-item">
         <Link to={"/orderArrivalDetails"} className="nav-link">
           Order Arrival Details

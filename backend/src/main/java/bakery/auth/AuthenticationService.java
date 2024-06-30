@@ -121,6 +121,7 @@ public class AuthenticationService {
 		var user = ((TblUser)auth.getPrincipal());
 		claims.put("fullName", user.getFullName());
 		claims.put("userId", user.getUserId());
+		claims.put("username", user.getUsername());
 		claims.put("role", user.getRoles());
 		var jwtToken = jwtService.generateToken(claims, user);
 		

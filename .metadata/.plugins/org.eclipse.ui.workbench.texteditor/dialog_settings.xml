@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0"/>
+		<item key="selection" value="Role"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Category"/>
+			<item value="TblCategory"/>
 			<item value="caused"/>
 			<item value="response"/>
 			<item value="LocalDate"/>
@@ -16,6 +18,7 @@
 			<item value="TblCustomer"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Role"/>
 			<item value="res"/>
 			<item value="Date"/>
 			<item value="TblUser"/>

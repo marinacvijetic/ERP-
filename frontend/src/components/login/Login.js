@@ -37,13 +37,15 @@ function Login(props){
                 const roleName = role.length > 0 ? role[0].roleName : '';
                 const userId = decodedToken.userId;
 
+                localStorage.setItem('username', decodedToken.username);
                 localStorage.setItem('role', JSON.stringify(roleName));
                 localStorage.setItem('userId', userId);
                 console.log(roleName);
                 login({
                     token: token,
                     role: roleName,
-                    userId: userId
+                    userId: userId,
+                    username: decodedToken.username
                 });
                 navigate('/');
             }

@@ -46,7 +46,7 @@ public class OrderService {
 		
 		oldOrder.setOrderDate(order.getOrderDate());
 		oldOrder.setShippingMethod(order.getShippingMethod());
-		oldOrder.setuser(order.getuser());
+		oldOrder.setUser(order.getUser());
 		oldOrder.setArrivalDetails(order.getArrivalDetails());
 		oldOrder.setStatus(order.getStatus());
 		

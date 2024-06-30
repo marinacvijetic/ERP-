@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +28,9 @@ public class PaymentController {
     private String stripePrivateKey;
     
     @Autowired
-    PaymentService paymentService;
+    private PaymentService paymentService;
     
-    @GetMapping("/client-secret")
+    @PostMapping("/client-secret")
     public ClientSecretResponse getClientSecret(@RequestBody ClientSecretRequest request) throws StripeException {
         // Set your Stripe secret key
         Stripe.apiKey = stripePrivateKey;

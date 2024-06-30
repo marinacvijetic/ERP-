@@ -24,7 +24,7 @@ const axiosInstance = axios.create({
   axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (!error.config.url.includes('/login') && error.response.status === 403) {
+      if (!error.config.url.includes('/auth/login') && error.response.status === 403) {
         window.location.href = '/403';
       }
       return Promise.reject(error);

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import bakery.model.ShippingMethod;
 import bakery.model.TblOrderArrivalDetails;
 import bakery.model.TblOrderStatus;
 import bakery.model.TblUser;
@@ -14,6 +15,7 @@ public class OrderResponse {
 	private Date orderDate;
 	private TblOrderStatus status;
 	private BigDecimal total;
+	private ShippingMethod shippingMethod;
 	private List<OrderItemResponse> orderItemsItems;
 	private TblOrderArrivalDetails arrivalDetails;
 	private TblUser user;
@@ -32,6 +34,14 @@ public class OrderResponse {
 
 	public TblOrderStatus getStatus() {
 		return status;
+	}
+	
+	
+	public ShippingMethod getShippingMethod() {
+		return shippingMethod;
+	}
+	public void setShippingMethod(ShippingMethod shippingMethod) {
+		this.shippingMethod = shippingMethod;
 	}
 	public void setStatus(TblOrderStatus status) {
 		this.status = status;

@@ -1,6 +1,7 @@
 package bakery.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,8 +65,9 @@ public class TblOrder {
     private List<TblOrderItem> orderItems;
 
     public TblOrder() {
-    	
+        this.orderItems = new ArrayList<>();
     }
+    
 
 	public Long getOrderId() {
 		return orderId;
@@ -103,23 +105,15 @@ public class TblOrder {
 		this.payment = payment;
 	}
 
+	public void setShippingMethod(ShippingMethod shippingMethod) {
+		this.shippingMethod = shippingMethod;
+	}
+
 	public TblUser getUser() {
 		return user;
 	}
 
 	public void setUser(TblUser user) {
-		this.user = user;
-	}
-
-	public void setShippingMethod(ShippingMethod shippingMethod) {
-		this.shippingMethod = shippingMethod;
-	}
-
-	public TblUser getuser() {
-		return user;
-	}
-
-	public void setuser(TblUser user) {
 		this.user = user;
 	}
 

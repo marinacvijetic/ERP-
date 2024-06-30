@@ -31,7 +31,7 @@ public class ProductService {
 		
 	}
 	
-	public TblProduct updaProduct(Long productId, TblProduct product) {
+	public TblProduct updateProduct(Long productId, TblProduct product) {
 		TblProduct oldProduct = productRepo.findById(productId).get();
 		if(oldProduct == null) {
 			return null;
@@ -39,7 +39,6 @@ public class ProductService {
 		
 		oldProduct.setProductName(product.getProductName());
 		oldProduct.setDescription(product.getDescription());
-		oldProduct.setProductImage(product.getProductImage());
 		oldProduct.setPricePerKilogram(product.getPricePerKilogram());
 		oldProduct.setCategory(product.getCategory());
 		

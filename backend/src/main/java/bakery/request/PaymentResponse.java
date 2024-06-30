@@ -9,7 +9,7 @@ public class PaymentResponse {
 	
 	private Long paymentId;
 	private BigDecimal amount;
-	private Date paymenDate;
+	private Date paymentDate;
 	private PaymentMethod paymentMethod;
 	private OrderResponse order;
 	
@@ -26,11 +26,11 @@ public class PaymentResponse {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public Date getPaymenDate() {
-		return paymenDate;
+	public Date getPaymentDate() {
+		return paymentDate;
 	}
-	public void setPaymenDate(Date paymenDate) {
-		this.paymenDate = paymenDate;
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
 
 	public PaymentMethod getPaymentMethod() {

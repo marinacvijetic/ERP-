@@ -32,8 +32,6 @@ public class TblProduct {
 	@Column(name="description", nullable=false)
 	private String description;
 
-	@Column(name="product_image")
-	private String productImage;
 
     @Column(name = "price_per_kilogram", nullable = false)
     private BigDecimal pricePerKilogram;
@@ -50,12 +48,11 @@ public class TblProduct {
 
     }
 
-	public TblProduct(Long productId, String productName, String description, String productImage,
+	public TblProduct(Long productId, String productName, String description,
 			BigDecimal pricePerKilogram, TblCategory category) {
 		this.productId = productId;
 		this.productName = productName;
 		this.description = description;
-		this.productImage = productImage;
 		this.pricePerKilogram = pricePerKilogram;
 		this.category = category;
 
@@ -83,14 +80,6 @@ public class TblProduct {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getProductImage() {
-		return productImage;
-	}
-
-	public void setProductImage(String productImage) {
-		this.productImage = productImage;
 	}
 
 	public BigDecimal getPricePerKilogram() {

@@ -36,6 +36,7 @@ public class OrderController {
 			res.setOrderId(x.getOrderId());
 			res.setOrderDate(x.getOrderDate());
 			res.setTotal(x.getTotal());
+			res.setShippingMethod(x.getShippingMethod());
 			res.setArrivalDetails(x.getArrivalDetails());
 			res.setOrderItemsItems(x.getOrderItems().stream().map(i -> {
 				OrderItemResponse itemResponse = new OrderItemResponse();
@@ -44,7 +45,7 @@ public class OrderController {
 				itemResponse.setProduct(i.getProduct());
 				return itemResponse;
 			}).collect(Collectors.toList()));
-			res.setUser(x.getuser());
+			res.setUser(x.getUser());
 			res.setStatus(x.getStatus());
 			return res;
 		}).collect(Collectors.toList());
@@ -67,7 +68,7 @@ public class OrderController {
 		TblOrder order = new TblOrder();
 		order.setOrderDate(request.getOrderDate());
 		order.setOrderItems(request.getOrderItems());
-		order.setuser(request.getUser());
+		order.setUser(request.getUser());
 		order.setArrivalDetails(request.getOrderArrivalDetails());
 		order.setShippingMethod(request.getShippingMethod());
 		TblOrder newOrder = orderService.addOrder(order);
