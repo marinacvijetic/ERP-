@@ -28,7 +28,7 @@ public class TblOrderItem {
     private TblOrder order;
 
     @ManyToOne
-    @JsonIgnoreProperties({"description", "productImage", "category"})
+    @JsonIgnoreProperties({"description", "category"})
     @JoinColumn(name = "product_id")
     private TblProduct product;
 

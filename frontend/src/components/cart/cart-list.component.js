@@ -1,50 +1,32 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loggedUser$ } from "../../state/logged-user.state";
+import { loadStripe } from "@stripe/stripe-js";
 import paymentService from "../../services/payment.service";
-import orderArrivalService from "../../services/orderArrival.service";
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import cartService from "../../services/cart.service";
 import orderService from "../../services/order.service";
+import orderArrivalService from "../../services/orderArrival.service";
 import { Button, Form, Table } from "react-bootstrap";
+import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../utils/CheckoutForm";
 
 const CartList = () => {
-//CART
-    const[cartItems, setCartItems] = useState([]);
-    const[totalPrice, setTotalPrice] = useState(0);
-    const[clientSecret, setClientSecret] = useState('');
-    const[stripe, setStripe] = useState(null);
-    const[orderId, setOrderId] = useState(null);
-    const [shippingMethod, setShippingMethod] = useState('TAKEAWAY');
 
-    //ARRIVAL DETAILS
-const[arrivalDetails, setArrivalDetails] = useState([]);
-const[newDetails, setNewDetails] = useState({
-    arrivalDetailsId: '',
-    arrivalDate: '',
-    arrivalTime: '',
-    country: '',
-    postalCode: '',
-    city: '',
-    streetName: '',
-    streetNumber: '',
-});
+    const [cartItems, setCartItems] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [clientSecret, setClientSecret] = useState('');
+    const [stripe, setStripe] = useState(null);
+    const [orderId, setOrderId] = useState(null);
 
-const[editMode, setEditMode] = useState(false);
-const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
-
-
-    const[user, setUser] = useState(null);
-
+    const [user, setUser] = useState(null);
+    const newDetailsData = null;
     const navigate = useNavigate();
     useEffect(() => {
         const subscription = loggedUser$.subscribe(_user => {
-            if(!_user.userId) {
+            if(!_user.userId){
                 navigate('/');
             } else if(_user.role !== 'USER') {
-                navigate('/')
+                navigate('/');
             }
 
             setUser(_user);
@@ -53,40 +35,35 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
         return () => {
             subscription.unsubscribe();
         };
-    }, [navigate]);
+    },[]);
+
+    const[arrivalDetails, setArrivalDetails] = useState([]);
+    const[newDetails, setNewDetails] = useState({
+        arrivalDetailsId: '',
+        arrivalDate: '',
+        arrivalTime: '',
+        country: '',
+        postalCode: '',
+        city: '',
+        streetName: '',
+        streetNumber: '',
+    });
+
+    const handleAddDetails = async () => {
+        try{
+            const response = await orderArrivalService.create(newDetails)
+            newDetailsData = response.data;
+            setArrivalDetails([...arrivalDetails, newDetailsData]);
+            // setNewDetails(newDetailsData);
+             
+        } catch(error) {
+            console.log('Error adding arrival details: ', error);
+        }
+    };
 
     const options = {
         clientSecret
     };
-
-    const fetchData = async () => {
-        try{
-            const response = await orderArrivalService.getAll();
-            setArrivalDetails(response.data);
-        }catch (error) {
-            console.error('Error retrieving data:', error);
-        }
-    };
-
-    const handleAddDetails = async () => {
-        try {
-            const response = await orderArrivalService.create(newDetails)
-            setArrivalDetails([...arrivalDetails, response.data]);
-            setNewDetails({
-                arrivalDetailsId: '',
-                arrivalDate: '',
-                arrivalTime: '',
-                country: '',
-                postalCode: '',
-                city: '',
-                streetName: '',
-                streetNumber: '',
-            });
-        } catch(error) {
-            console.error('Error adding arrival details: ', error);
-        }
-    };
-
 
     useEffect(() => {
         if(orderId) {
@@ -99,7 +76,8 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
 
     useEffect(() => {
         fetchCartItems();
-    }, []);
+    },[]);
+
 
     async function getClientSecret() {
         const response = await paymentService.getClientSecret(totalPrice, user.userId, orderId);
@@ -121,6 +99,7 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
         for(const item of items) {
             total += item.pricePerKilogram * item.quantity;
         }
+
         setTotalPrice(total);
     };
 
@@ -137,14 +116,13 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
         })
 
         const response = await orderService.create({
-            orderItems,
+            orderItems: orderItems,
             total: totalPrice,
             user: {
                 userId: user.userId
             },
-            arrivalDetails: {
-                arrivalDetailsId: editArrivalDetailsId
-            }
+            arrivalDetails: newDetailsData,
+
         });
 
         setOrderId(response.data);
@@ -159,7 +137,7 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
             <Table striped bordered>
                 <thead>
                     <tr>
-                        <th>Product</th>
+                    <th>Product</th>
                         <th>Price per kg</th>
                         <th>Quantity</th>
                         <th>Total price</th>
@@ -168,24 +146,24 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
                 <tbody>
                     {cartItems.map((item) => (
                         <tr key={item.productId}>
-                            <td>{item.productName}</td>
-                            <td>{item.pricePerKilogram}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.pricePerKilogram * item.quantity}</td>
+                        <td>{item.productName}</td>
+                        <td>{item.pricePerKilogram}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.pricePerKilogram * item.quantity}</td>
                         </tr>
                     ))}
                     <tr><h4>Total Price: {totalPrice}</h4></tr>
                 </tbody>
             </Table>
             <div>
-            <h4>Add Order Arrival Details</h4>
-            {user && user.userId && <Form.Group>
-                        <Form.Control
-                        type="date"
-                        value={newDetails.arrivalDate}
-                        onChange={(e) => setNewDetails({...newDetails, arrivalDate: e.target.value})}
-                        />    
-                        <Form.Control
+                <h4>Add Order Arrival Details</h4>
+                {user && user.userId && <Form.Group>
+                    <Form.Control
+                    type="date"
+                    value={newDetails.arrivalDate}
+                    onChange={(e) => setNewDetails({...newDetails, arrivalDate: e.target.value})}
+                    />
+                    <Form.Control
                         type="time"
                         value={newDetails.arrivalTime}
                         onChange={(e) => setNewDetails({...newDetails, arrivalTime: e.target.value})}
@@ -220,31 +198,29 @@ const[editArrivalDetailsId, setEditArrivalDetailsId] = useState('');
                         value={newDetails.streetNumber}
                         onChange={(e) => setNewDetails({...newDetails, streetNumber: e.target.value})}
                         /> 
-                        
-                            <Button variant="primary" onClick={handleAddDetails} className="mt-2">
-                                Add Arrival Details
-                            </Button>
-                        
-                    </Form.Group>
+                        <Button variant="primary" onClick={handleAddDetails} className="mt-2">
+                            Add Arrival Details
+                        </Button>
+                </Form.Group>
                 }
             </div>
-
             <div>
                 {orderId ? 
                     !clientSecret ? 
-                        <div>Loading payment data ...</div> :
-                            <Elements stripe={stripe} options={options}>
-                                <CheckoutForm cartItems={cartItems}/>
-                            </Elements>
-                :
-                    <Button variant="primary" onClick={makeOrder}> 
-                     Order 
+                    <div>Loading payment data . . .</div> :
+                        <Elements stripe={stripe} options={options}>
+                            <CheckoutForm cartItems = {cartItems}/>
+                        </Elements>
+                        :
+                    <Button variant="primary" onClick={makeOrder}>
+                        Order
                     </Button>
-                    }
+                }
             </div>
         </div>
 
     );
+    
 };
 
 export default CartList;
