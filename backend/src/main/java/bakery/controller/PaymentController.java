@@ -49,8 +49,17 @@ public class PaymentController {
     }
 
     static class ClientSecretRequest {
+    	private long userId;
         private long total;
         private String orderId;
+        
+        public long getUserId() {
+        	return userId;
+        }
+        
+        public void setUserId(long userId) {
+        	this.userId = userId;
+        }
 
         public long getTotal() {
             return total;

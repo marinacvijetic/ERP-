@@ -54,7 +54,7 @@ const CartList = () => {
             const response = await orderArrivalService.create(newDetails)
             newDetailsData = response.data;
             setArrivalDetails([...arrivalDetails, newDetailsData]);
-            // setNewDetails(newDetailsData);
+            setNewDetails(newDetailsData);
              
         } catch(error) {
             console.log('Error adding arrival details: ', error);

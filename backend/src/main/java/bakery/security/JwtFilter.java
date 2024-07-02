@@ -34,6 +34,14 @@ public class JwtFilter extends OncePerRequestFilter{
 			@NonNull HttpServletResponse response, 
 			@NonNull FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		response.setHeader("Content-Security-Policy",
+                "default-src 'self'; " +
+                "script-src 'self' https://m.stripe.network; " +
+                "style-src 'self' 'unsafe-inline'; " + // Allow inline styles with 'unsafe-inline' or nonce
+                "img-src 'self'; " +
+                "font-src 'self'; " +
+                "connect-src 'self' https://q.stripe.com");
 
 		if(request.getServletPath().contains("/auth")) {
 			filterChain.doFilter(request, response);

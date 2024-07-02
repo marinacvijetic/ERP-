@@ -2,6 +2,7 @@ package bakery.controller;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
+import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.StripeObject;
 import com.stripe.net.Webhook;
 
 import bakery.model.PaymentMethod;
@@ -24,6 +28,9 @@ import bakery.repository.OrderRepository;
 import bakery.repository.OrderStatusRepository;
 import bakery.repository.PaymentRepository;
 
+
+
+import com.stripe.net.ApiResource;
 
 @RestController
 public class WebhookController {
@@ -45,11 +52,20 @@ public class WebhookController {
         // Verify the Stripe signature
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, webhookKey);
+            
+            EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
+            StripeObject stripeObject = null;
+            if (dataObjectDeserializer.getObject().isPresent()) {
+                stripeObject = dataObjectDeserializer.getObject().get();
+            } else {
+                // Deserialization failed, probably due to an API version mismatch.
+                // Refer to the Javadoc documentation on `EventDataObjectDeserializer` for
+                // instructions on how to handle this case, or return an error here.
+            }
             // Process the event based on its type
             switch (event.getType()) {
                 case "payment_intent.succeeded":
-                    PaymentIntent paymentIntent = (PaymentIntent) event.getDataObjectDeserializer()
-                            .getObject().get();
+                	PaymentIntent paymentIntent = (PaymentIntent)stripeObject;
 
                     // Retrieve the metadata associated with the PaymentIntent
                     String orderId = paymentIntent.getMetadata().get("orderId");

@@ -38,7 +38,7 @@ function Login(props){
                 const userId = decodedToken.userId;
 
                 localStorage.setItem('username', decodedToken.username);
-                localStorage.setItem('role', JSON.stringify(roleName));
+                localStorage.setItem('role', String(roleName));
                 localStorage.setItem('userId', userId);
                 console.log(roleName);
                 login({
